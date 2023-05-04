@@ -18,7 +18,7 @@ Bare Metal is basically a special way of programming micro-controllers. Here, no
 
 The implementation process is quite simple. From source files, the compiler then the linker will create an executable which will be downloaded to the board for execution. Here is a Summary:
 
-![alt text for screen readers](/home/abderrahman/Downloads/Summary.png)
+![alt text for screen readers](images/Summary.png)
 
 
 *Here are the deliverables of this Repository*
@@ -32,7 +32,7 @@ The implementation process is quite simple. From source files, the compiler then
 
 Our goal is to convert the high-level language file into an executable.
 
-![alt text for screen readers](CrossCompilation.png)
+![alt text for screen readers](images/CrossCompilation.png)
 
 *To do that we need to use something called* **Cross Compilation**
 
@@ -79,14 +79,14 @@ These steps are the ones we are going to need to do during our development. They
 ### Pre-processing
 This is a step where all pre-processing directives are resolved. We obtain a file extension **.i** .
 
-![alt text for screen readers](/home/abderrahman/Downloads/Prep.png)
+![alt text for screen readers](/images/Prep.png)
 
 This is not compilation it's just the first stage of the compilation where all **#includes** and **C macros** will be resolved and a preprocessed file (.i) is created.
 
 ### Code generation
 In this stage higher level language code statements will be converted into processor architectural level mains that **C statements** will be converted into **assembly** level language.
 
-![alt text for screen readers](/home/abderrahman/Downloads/Codegen.png)
+![alt text for screen readers](/imagesCodegen.png)
 
 One thing to mention here is that all of the 3 stages already mentioned are done by the compiler.
 
@@ -94,12 +94,12 @@ One thing to mention here is that all of the 3 stages already mentioned are done
 
 In this stage the assembly level statements will be converted into opcodes(machine codes for instructions), the output of this stage will be a relocatable file(means that the file contains machine codes with no absolute addresses).
 
-![alt text for screen readers](/home/abderrahman/Downloads/assembly.png)
+![alt text for screen readers](images/assembly.png)
 
 ### To summarize
 On this diagram, we distinguish the complete compilation process, step by step.
 
-![alt text for screen readers](/home/abderrahman/Downloads/Sum.png)
+![alt text for screen readers](images/Sum.png)
 
 ### First compilation
 
@@ -202,7 +202,7 @@ To create a valid Startup file, you must adhere to the following rules:
 
 So, are you ready to create your first **Startup file**? In the following lines, we will take the **STM32 BluePill** board based on the **STM32F103C8T6 MCU** as an example.
 
-![alt text for screen readers](/home/abderrahman/Downloads/stm32bp.png)
+![alt text for screen readers](images/stm32bp.png)
 
 Here are the steps for building our **Startup file**:
 1. Go to your working directory and create an empty file: 
@@ -211,18 +211,12 @@ $ touch stm32_startup.c
 ```
 2. Let's look at a vector table for an **STM32F103C8T6 MCU**:
 
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   YOU NEED TO  ADD HERE THE SCHEME :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-
-
 Each MCU has its own vector table. For Stm32f103c8t6 the vector table is 304 bytes in total: 4 bytes for the MSP, 15 x 4 bytes for the first 15 system IRQs and 4 x 60 bytes for the special IRQs.
 
 To see more clearly, look for your MCU on the ST Microelectronics site then get the Reference Manual in the Documentation section and finally look for Vector table inside this document. This will give you all the information needed to build the Startup file. We will need it very soon. Here is the beginning of the table for the F103C8T6 (page 204 of the document):
 
 
-![alt text for screen readers](/home/abderrahman/Downloads/stm32vt.png)
+![alt text for screen readers](images/stm32vt.png)
 
 3. At the very beginning of the Startup file, add *#include <stdint.h>* . The include *<stdint.h>* contains a whole set of macros defining particular types of integers ( *uint32_t* for example). Create an array to contain the *IRQ addresses* (from 0 to 59 for our example): 
 ```C
@@ -399,11 +393,6 @@ uint32_t vectors[] __attribute__((section(".isr_vector"))) = {
 
 On this diagram we see important information: the displacement of the .data zone towards the SRAM and the presence of the .bss zone in the SRAM.
 
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   YOU NEED TO  ADD HERE THE SCHEME :::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
-
 Now that we've defined the whole vector table, let's see how the processor will start:
 
 1. After a reset, the **PC** ( Program Counter) is loaded with the address **0x00000000** then the content of this address is read and stored in the **internal register MSP**. This is the **Master Stack Pointer**, the place in memory where the stack begins. Its value is in the first cell of the vector table, as defined above.
@@ -474,7 +463,7 @@ MEMORY
 **For our STM32f103C8T6:**
 Let's take the *STM32F103C8T6* as an example again. Be careful however because some **BluePill** are given for 64 kb of Flash while it is possible to go up to *128 kb*.
 
-![alt text for screen readers](/home/abderrahman/Downloads/bluepill_flash.png)
+![alt text for screen readers](images/bluepill_flash.png)
 
 **This gives:**
 ```bash
@@ -922,8 +911,6 @@ Once all this is done, you can compile everything to check that there are no err
 It's time to finally get down to business: downloading the code to the **BluePill**. In our case, it is a question of downloading the **ELF** file on the Micro-Controller (in the** flash memory**) then of debugging it.
 
 We will make the following connections:
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   YOU NEED TO  ADD HERE THE SCHEME ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 The **OpenOCD** software runs on a machine(PC), connected to a circuit (the debugger) responsible for converting the data intended for (or coming from) the Board. This circuit is connected to the Bluebill board.
 
