@@ -32,7 +32,7 @@ The implementation process is quite simple. From source files, the compiler then
 
 Our goal is to convert the high-level language file into an executable.
 
-![alt text for screen readers](/home/abderrahman/Downloads/CrossCompilation.png)
+![alt text for screen readers](CrossCompilation.png)
 
 *To do that we need to use something called* **Cross Compilation**
 
