@@ -18,7 +18,7 @@ Bare Metal is basically a special way of programming micro-controllers. Here, no
 
 The implementation process is quite simple. From source files, the compiler then the linker will create an executable which will be downloaded to the board for execution. Here is a Summary:
 
-![alt text for screen readers](images/Summary.png)
+![alt text for screen readers](Summary.png)
 
 
 *Here are the deliverables of this Repository*
@@ -32,7 +32,7 @@ The implementation process is quite simple. From source files, the compiler then
 
 Our goal is to convert the high-level language file into an executable.
 
-![alt text for screen readers](images/CrossCompilation.png)
+![alt text for screen readers](CrossCompilation.png)
 
 *To do that we need to use something called* **Cross Compilation**
 
@@ -79,14 +79,14 @@ These steps are the ones we are going to need to do during our development. They
 ### Pre-processing
 This is a step where all pre-processing directives are resolved. We obtain a file extension **.i** .
 
-![alt text for screen readers](/images/Prep.png)
+![alt text for screen readers](Prep.png)
 
 This is not compilation it's just the first stage of the compilation where all **#includes** and **C macros** will be resolved and a preprocessed file (.i) is created.
 
 ### Code generation
 In this stage higher level language code statements will be converted into processor architectural level mains that **C statements** will be converted into **assembly** level language.
 
-![alt text for screen readers](/imagesCodegen.png)
+![alt text for screen readers](Codegen.png)
 
 One thing to mention here is that all of the 3 stages already mentioned are done by the compiler.
 
@@ -94,12 +94,12 @@ One thing to mention here is that all of the 3 stages already mentioned are done
 
 In this stage the assembly level statements will be converted into opcodes(machine codes for instructions), the output of this stage will be a relocatable file(means that the file contains machine codes with no absolute addresses).
 
-![alt text for screen readers](images/assembly.png)
+![alt text for screen readers](assembly.png)
 
 ### To summarize
 On this diagram, we distinguish the complete compilation process, step by step.
 
-![alt text for screen readers](images/Sum.png)
+![alt text for screen readers](Sum.png)
 
 ### First compilation
 
@@ -202,7 +202,7 @@ To create a valid Startup file, you must adhere to the following rules:
 
 So, are you ready to create your first **Startup file**? In the following lines, we will take the **STM32 BluePill** board based on the **STM32F103C8T6 MCU** as an example.
 
-![alt text for screen readers](images/stm32bp.png)
+![alt text for screen readers](stm32bp.png)
 
 Here are the steps for building our **Startup file**:
 1. Go to your working directory and create an empty file: 
@@ -216,7 +216,7 @@ Each MCU has its own vector table. For Stm32f103c8t6 the vector table is 304 byt
 To see more clearly, look for your MCU on the ST Microelectronics site then get the Reference Manual in the Documentation section and finally look for Vector table inside this document. This will give you all the information needed to build the Startup file. We will need it very soon. Here is the beginning of the table for the F103C8T6 (page 204 of the document):
 
 
-![alt text for screen readers](images/stm32vt.png)
+![alt text for screen readers](stm32vt.png)
 
 3. At the very beginning of the Startup file, add *#include <stdint.h>* . The include *<stdint.h>* contains a whole set of macros defining particular types of integers ( *uint32_t* for example). Create an array to contain the *IRQ addresses* (from 0 to 59 for our example): 
 ```C
@@ -463,7 +463,7 @@ MEMORY
 **For our STM32f103C8T6:**
 Let's take the *STM32F103C8T6* as an example again. Be careful however because some **BluePill** are given for 64 kb of Flash while it is possible to go up to *128 kb*.
 
-![alt text for screen readers](images/bluepill_flash.png)
+![alt text for screen readers](bluepill_flash.png)
 
 **This gives:**
 ```bash
@@ -539,9 +539,6 @@ SECTIONS
 
 Also always keep in mind the diagram below which gives you the order to follow for the *SECTIONS command*. In order (starting from the bottom) we have the *vector table*, the **.text** section , the **.rodata** section and the **.data** section.
 
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   YOU NEED TO  ADD HERE THE SCHEME ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
-
-
 Let's continue with the **.data** section . This gives :
 
 ```bash
@@ -558,8 +555,6 @@ SECTIONS
 }
 ```
 According to the diagram below, we see that the .data area must be copied from the FLASH (load address) to the SRAM (virtual address or absolute address). This is what we find in the syntax of the** SECTIONS > SRAM AT > FLASH** command
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   YOU NEED TO  ADD HERE THE SCHEME ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 
 We continue with the uninitialized zone (the **.bss**). In this case, only the **SRAM** will contain this data. It is placed only in the **SRAM** (see diagram above). This gives :
@@ -727,8 +722,6 @@ SECTIONS
 ### The Linking Stage of the build Process
 In this stage all the **.o files** will be taken by the **linker** and merged to create *ONE* executable file (**.elf**).
 The linker is still **arm-none-eabi-gcc** (and yes, it can do everything!!).
-
-::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::   YOU NEED TO  ADD HERE THE SCHEME ::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::::
 
 *Here is the command for this purpose:*
 ```bash
